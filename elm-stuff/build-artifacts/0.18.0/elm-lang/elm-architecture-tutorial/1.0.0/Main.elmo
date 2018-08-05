@@ -1,0 +1,234 @@
+var _elm_lang$elm_architecture_tutorial$Main$renderStartStop = function (model) {
+	return (_elm_lang$core$Native_Utils.eq(model.focus, true) || _elm_lang$core$Native_Utils.eq(model.rest, true)) ? 'Stop' : 'Start';
+};
+var _elm_lang$elm_architecture_tutorial$Main$zeroPad = function (n) {
+	return A3(
+		_elm_lang$core$String$padLeft,
+		2,
+		_elm_lang$core$Native_Utils.chr('0'),
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$elm_architecture_tutorial$Main$renderTime = function (time) {
+	var seconds = A2(_elm_lang$core$Basics_ops['%'], time, 60);
+	var minutes = (time / 60) | 0;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$elm_architecture_tutorial$Main$zeroPad(minutes),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' : ',
+			_elm_lang$elm_architecture_tutorial$Main$zeroPad(seconds)));
+};
+var _elm_lang$elm_architecture_tutorial$Main$flip = function (bool) {
+	return !bool;
+};
+var _elm_lang$elm_architecture_tutorial$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'FocusTick':
+				return (_elm_lang$core$Native_Utils.cmp(model.focusTime, 0) > 0) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{focusTime: model.focusTime - 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus),
+							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest),
+							focusTime: 1500
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'RestTick':
+				return (_elm_lang$core$Native_Utils.cmp(model.restTime, 0) > 0) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{restTime: model.restTime - 1}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus),
+							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest),
+							restTime: 300
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Focus':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Rest':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Reset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{focus: false, rest: false, focusTime: 1500, restTime: 300}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _elm_lang$elm_architecture_tutorial$Main$init = {
+	ctor: '_Tuple2',
+	_0: {focus: false, focusTime: 1500, rest: false, restTime: 300},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _elm_lang$elm_architecture_tutorial$Main$Model = F4(
+	function (a, b, c, d) {
+		return {focus: a, focusTime: b, rest: c, restTime: d};
+	});
+var _elm_lang$elm_architecture_tutorial$Main$Nothing = {ctor: 'Nothing'};
+var _elm_lang$elm_architecture_tutorial$Main$Reset = {ctor: 'Reset'};
+var _elm_lang$elm_architecture_tutorial$Main$Rest = {ctor: 'Rest'};
+var _elm_lang$elm_architecture_tutorial$Main$Focus = {ctor: 'Focus'};
+var _elm_lang$elm_architecture_tutorial$Main$startStop = function (model) {
+	return _elm_lang$core$Native_Utils.eq(model.focus, true) ? _elm_lang$elm_architecture_tutorial$Main$Focus : (_elm_lang$core$Native_Utils.eq(model.rest, true) ? _elm_lang$elm_architecture_tutorial$Main$Rest : ((_elm_lang$core$Native_Utils.cmp(model.focusTime, 1500) < 0) ? _elm_lang$elm_architecture_tutorial$Main$Focus : ((_elm_lang$core$Native_Utils.cmp(model.restTime, 300) < 0) ? _elm_lang$elm_architecture_tutorial$Main$Rest : ((_elm_lang$core$Native_Utils.eq(model.focus, false) && _elm_lang$core$Native_Utils.eq(model.rest, false)) ? _elm_lang$elm_architecture_tutorial$Main$Focus : _elm_lang$elm_architecture_tutorial$Main$Nothing))));
+};
+var _elm_lang$elm_architecture_tutorial$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('root'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('control'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('button'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									_elm_lang$elm_architecture_tutorial$Main$startStop(model)),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$elm_architecture_tutorial$Main$renderStartStop(model)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$button,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('button'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(_elm_lang$elm_architecture_tutorial$Main$Reset),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Reset'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'timer', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'active', _1: model.focus},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$elm_architecture_tutorial$Main$renderTime(model.focusTime)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$classList(
+								{
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'timer', _1: true},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'active-rest', _1: model.rest},
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$elm_architecture_tutorial$Main$renderTime(model.restTime)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _elm_lang$elm_architecture_tutorial$Main$RestTick = function (a) {
+	return {ctor: 'RestTick', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Main$FocusTick = function (a) {
+	return {ctor: 'FocusTick', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Main$subscriptions = function (model) {
+	return _elm_lang$core$Native_Utils.eq(model.focus, true) ? A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _elm_lang$elm_architecture_tutorial$Main$FocusTick) : (_elm_lang$core$Native_Utils.eq(model.rest, true) ? A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _elm_lang$elm_architecture_tutorial$Main$RestTick) : _elm_lang$core$Platform_Sub$none);
+};
+var _elm_lang$elm_architecture_tutorial$Main$main = _elm_lang$html$Html$program(
+	{init: _elm_lang$elm_architecture_tutorial$Main$init, update: _elm_lang$elm_architecture_tutorial$Main$update, subscriptions: _elm_lang$elm_architecture_tutorial$Main$subscriptions, view: _elm_lang$elm_architecture_tutorial$Main$view})();

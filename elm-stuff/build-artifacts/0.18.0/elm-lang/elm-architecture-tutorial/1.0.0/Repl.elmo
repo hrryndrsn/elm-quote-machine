@@ -1,0 +1,54 @@
+var _elm_lang$elm_architecture_tutorial$Repl$under70 = function (_p0) {
+	var _p1 = _p0;
+	return _elm_lang$core$Native_Utils.cmp(_p1.age, 70) < 0;
+};
+var _elm_lang$elm_architecture_tutorial$Repl$t_s_o_l = {ctor: '_Tuple0'};
+var _elm_lang$elm_architecture_tutorial$Repl$point = {x: 3, y: 4};
+var _elm_lang$elm_architecture_tutorial$Repl$over9000 = function (powerLevel) {
+	return (_elm_lang$core$Native_Utils.cmp(powerLevel, 9000) > 0) ? 'It\'s over 9000!!!' : 'meh';
+};
+var _elm_lang$elm_architecture_tutorial$Repl$numbers = {
+	ctor: '::',
+	_0: 1,
+	_1: {
+		ctor: '::',
+		_0: 4,
+		_1: {
+			ctor: '::',
+			_0: 3,
+			_1: {
+				ctor: '::',
+				_0: 2,
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
+var _elm_lang$elm_architecture_tutorial$Repl$names = {
+	ctor: '::',
+	_0: 'Alice',
+	_1: {
+		ctor: '::',
+		_0: 'Bob',
+		_1: {
+			ctor: '::',
+			_0: 'Chuck',
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _elm_lang$elm_architecture_tutorial$Repl$isNegative = function (n) {
+	return _elm_lang$core$Native_Utils.cmp(n, 0) < 0;
+};
+var _elm_lang$elm_architecture_tutorial$Repl$goodName = function (name) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(name),
+		20) < 1) ? {ctor: '_Tuple2', _0: true, _1: 'name accepted'} : {ctor: '_Tuple2', _0: false, _1: 'name was too long: please limit it to 20 chararcters'};
+};
+var _elm_lang$elm_architecture_tutorial$Repl$double = function (n) {
+	return n * 2;
+};
+var _elm_lang$elm_architecture_tutorial$Repl$bill = {name: 'Gates', age: 57};
+var _elm_lang$elm_architecture_tutorial$Repl$d_e_l_t_r_o_n_3_0_3_0 = _elm_lang$core$Native_Utils.update(
+	_elm_lang$elm_architecture_tutorial$Repl$bill,
+	{age: 22});
