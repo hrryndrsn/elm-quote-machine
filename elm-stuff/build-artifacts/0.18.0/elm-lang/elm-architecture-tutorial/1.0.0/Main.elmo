@@ -1,234 +1,227 @@
-var _elm_lang$elm_architecture_tutorial$Main$renderStartStop = function (model) {
-	return (_elm_lang$core$Native_Utils.eq(model.focus, true) || _elm_lang$core$Native_Utils.eq(model.rest, true)) ? 'Stop' : 'Start';
+var _elm_lang$elm_architecture_tutorial$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
 };
-var _elm_lang$elm_architecture_tutorial$Main$zeroPad = function (n) {
-	return A3(
-		_elm_lang$core$String$padLeft,
-		2,
-		_elm_lang$core$Native_Utils.chr('0'),
-		_elm_lang$core$Basics$toString(n));
-};
-var _elm_lang$elm_architecture_tutorial$Main$renderTime = function (time) {
-	var seconds = A2(_elm_lang$core$Basics_ops['%'], time, 60);
-	var minutes = (time / 60) | 0;
+var _elm_lang$elm_architecture_tutorial$Main$message = function (msg) {
 	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$elm_architecture_tutorial$Main$zeroPad(minutes),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			' : ',
-			_elm_lang$elm_architecture_tutorial$Main$zeroPad(seconds)));
+		_elm_lang$core$Task$perform,
+		_elm_lang$core$Basics$identity,
+		_elm_lang$core$Task$succeed(msg));
+};
+var _elm_lang$elm_architecture_tutorial$Main$chooseRandomQuote = function (quotes) {
+	return _elm_community$random_extra$Random_Extra$sample(quotes);
+};
+var _elm_lang$elm_architecture_tutorial$Main$renderQuoteClass = function (bool) {
+	var style = _elm_lang$core$Basics$toString(bool);
+	return A2(_elm_lang$core$Basics_ops['++'], 'quote ', style);
+};
+var _elm_lang$elm_architecture_tutorial$Main$renderAuthorClass = function (bool) {
+	var style = _elm_lang$core$Basics$toString(bool);
+	return A2(_elm_lang$core$Basics_ops['++'], 'sub ', style);
 };
 var _elm_lang$elm_architecture_tutorial$Main$flip = function (bool) {
 	return !bool;
 };
+var _elm_lang$elm_architecture_tutorial$Main$Quote = F2(
+	function (a, b) {
+		return {quote: a, author: b};
+	});
+var _elm_lang$elm_architecture_tutorial$Main$quoteDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_elm_lang$elm_architecture_tutorial$Main$Quote,
+	A2(_elm_lang$core$Json_Decode$field, 'quote', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'author', _elm_lang$core$Json_Decode$string));
+var _elm_lang$elm_architecture_tutorial$Main$decodeData = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'quotes',
+		_1: {ctor: '[]'}
+	},
+	_elm_lang$core$Json_Decode$list(_elm_lang$elm_architecture_tutorial$Main$quoteDecoder));
+var _elm_lang$elm_architecture_tutorial$Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {quotes: a, selectedQuote: b, quotesLoaded: c, styleBool: d, error: e};
+	});
+var _elm_lang$elm_architecture_tutorial$Main$NoOp = {ctor: 'NoOp'};
+var _elm_lang$elm_architecture_tutorial$Main$RandomQuote = function (a) {
+	return {ctor: 'RandomQuote', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Main$Generate = {ctor: 'Generate'};
+var _elm_lang$elm_architecture_tutorial$Main$renderQuote = F2(
+	function (quote, bool) {
+		var _p0 = quote;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('loading'),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			var _p1 = _p0._0;
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('container'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class(
+								_elm_lang$elm_architecture_tutorial$Main$renderQuoteClass(bool)),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p1.quote),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class(
+									_elm_lang$elm_architecture_tutorial$Main$renderAuthorClass(bool)),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(_p1.author),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('generate'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(_elm_lang$elm_architecture_tutorial$Main$Generate),
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('New quote'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		}
+	});
+var _elm_lang$elm_architecture_tutorial$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$elm_architecture_tutorial$Main$renderQuote, model.selectedQuote, model.styleBool),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _elm_lang$elm_architecture_tutorial$Main$NewData = function (a) {
+	return {ctor: 'NewData', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Main$getData = function () {
+	var url = 'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json';
+	var request = A2(_elm_lang$http$Http$get, url, _elm_lang$elm_architecture_tutorial$Main$decodeData);
+	return A2(_elm_lang$http$Http$send, _elm_lang$elm_architecture_tutorial$Main$NewData, request);
+}();
+var _elm_lang$elm_architecture_tutorial$Main$init = {
+	ctor: '_Tuple2',
+	_0: A5(
+		_elm_lang$elm_architecture_tutorial$Main$Model,
+		{ctor: '[]'},
+		_elm_lang$core$Maybe$Nothing,
+		false,
+		false,
+		''),
+	_1: _elm_lang$elm_architecture_tutorial$Main$getData
+};
 var _elm_lang$elm_architecture_tutorial$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'FocusTick':
-				return (_elm_lang$core$Native_Utils.cmp(model.focusTime, 0) > 0) ? {
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'FetchData':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$elm_architecture_tutorial$Main$getData};
+			case 'NewData':
+				if (_p2._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{quotes: _p2._0._0, quotesLoaded: true}),
+						_1: _elm_lang$elm_architecture_tutorial$Main$message(_elm_lang$elm_architecture_tutorial$Main$Generate)
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								error: _elm_lang$core$Basics$toString(_p2._0._0)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'Generate':
+				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{focusTime: model.focusTime - 1}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				} : {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus),
-							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest),
-							focusTime: 1500
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_0: model,
+					_1: A2(
+						_elm_lang$core$Random$generate,
+						_elm_lang$elm_architecture_tutorial$Main$RandomQuote,
+						_elm_lang$elm_architecture_tutorial$Main$chooseRandomQuote(model.quotes))
 				};
-			case 'RestTick':
-				return (_elm_lang$core$Native_Utils.cmp(model.restTime, 0) > 0) ? {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{restTime: model.restTime - 1}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				} : {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus),
-							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest),
-							restTime: 300
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Focus':
+			case 'RandomQuote':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							focus: _elm_lang$elm_architecture_tutorial$Main$flip(model.focus)
+							selectedQuote: _p2._0,
+							styleBool: _elm_lang$elm_architecture_tutorial$Main$flip(model.styleBool)
 						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Rest':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							rest: _elm_lang$elm_architecture_tutorial$Main$flip(model.rest)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'Reset':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{focus: false, rest: false, focusTime: 1500, restTime: 300}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
-var _elm_lang$elm_architecture_tutorial$Main$init = {
-	ctor: '_Tuple2',
-	_0: {focus: false, focusTime: 1500, rest: false, restTime: 300},
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _elm_lang$elm_architecture_tutorial$Main$Model = F4(
-	function (a, b, c, d) {
-		return {focus: a, focusTime: b, rest: c, restTime: d};
-	});
-var _elm_lang$elm_architecture_tutorial$Main$Nothing = {ctor: 'Nothing'};
-var _elm_lang$elm_architecture_tutorial$Main$Reset = {ctor: 'Reset'};
-var _elm_lang$elm_architecture_tutorial$Main$Rest = {ctor: 'Rest'};
-var _elm_lang$elm_architecture_tutorial$Main$Focus = {ctor: 'Focus'};
-var _elm_lang$elm_architecture_tutorial$Main$startStop = function (model) {
-	return _elm_lang$core$Native_Utils.eq(model.focus, true) ? _elm_lang$elm_architecture_tutorial$Main$Focus : (_elm_lang$core$Native_Utils.eq(model.rest, true) ? _elm_lang$elm_architecture_tutorial$Main$Rest : ((_elm_lang$core$Native_Utils.cmp(model.focusTime, 1500) < 0) ? _elm_lang$elm_architecture_tutorial$Main$Focus : ((_elm_lang$core$Native_Utils.cmp(model.restTime, 300) < 0) ? _elm_lang$elm_architecture_tutorial$Main$Rest : ((_elm_lang$core$Native_Utils.eq(model.focus, false) && _elm_lang$core$Native_Utils.eq(model.rest, false)) ? _elm_lang$elm_architecture_tutorial$Main$Focus : _elm_lang$elm_architecture_tutorial$Main$Nothing))));
-};
-var _elm_lang$elm_architecture_tutorial$Main$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('root'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('control'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$button,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('button'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onClick(
-									_elm_lang$elm_architecture_tutorial$Main$startStop(model)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								_elm_lang$elm_architecture_tutorial$Main$renderStartStop(model)),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$button,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('button'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onClick(_elm_lang$elm_architecture_tutorial$Main$Reset),
-									_1: {ctor: '[]'}
-								}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Reset'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$classList(
-							{
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'timer', _1: true},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'active', _1: model.focus},
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(
-							_elm_lang$elm_architecture_tutorial$Main$renderTime(model.focusTime)),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$classList(
-								{
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'timer', _1: true},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'active-rest', _1: model.rest},
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								_elm_lang$elm_architecture_tutorial$Main$renderTime(model.restTime)),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
-var _elm_lang$elm_architecture_tutorial$Main$RestTick = function (a) {
-	return {ctor: 'RestTick', _0: a};
-};
-var _elm_lang$elm_architecture_tutorial$Main$FocusTick = function (a) {
-	return {ctor: 'FocusTick', _0: a};
-};
-var _elm_lang$elm_architecture_tutorial$Main$subscriptions = function (model) {
-	return _elm_lang$core$Native_Utils.eq(model.focus, true) ? A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _elm_lang$elm_architecture_tutorial$Main$FocusTick) : (_elm_lang$core$Native_Utils.eq(model.rest, true) ? A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _elm_lang$elm_architecture_tutorial$Main$RestTick) : _elm_lang$core$Platform_Sub$none);
-};
 var _elm_lang$elm_architecture_tutorial$Main$main = _elm_lang$html$Html$program(
-	{init: _elm_lang$elm_architecture_tutorial$Main$init, update: _elm_lang$elm_architecture_tutorial$Main$update, subscriptions: _elm_lang$elm_architecture_tutorial$Main$subscriptions, view: _elm_lang$elm_architecture_tutorial$Main$view})();
+	{init: _elm_lang$elm_architecture_tutorial$Main$init, view: _elm_lang$elm_architecture_tutorial$Main$view, update: _elm_lang$elm_architecture_tutorial$Main$update, subscriptions: _elm_lang$elm_architecture_tutorial$Main$subscriptions})();
+var _elm_lang$elm_architecture_tutorial$Main$FetchData = {ctor: 'FetchData'};

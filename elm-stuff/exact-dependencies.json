@@ -1,5 +1,6 @@
 {
     "elm-lang/virtual-dom": "2.0.4",
+    "elm-community/random-extra": "2.0.0",
     "evancz/elm-markdown": "3.0.2",
     "elm-lang/websocket": "1.0.2",
     "elm-lang/html": "2.0.0",
